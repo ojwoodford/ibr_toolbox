@@ -1,5 +1,5 @@
-Oliver Woodford's Image-Based Rendering and Stereo algorithms, version 2.3.
-----------------------------------------------------------------------
+Oliver Woodford's Image-Based Rendering and Stereo algorithms
+-------------------------------------------------------------
 
 References
 ----------
@@ -18,7 +18,7 @@ License
 The software is licensed as described in the LICENSE.TXT file found in the root folder of this package.
 
 Installing
-----------
+---------
 
 The software is Matlab source code and mex files. To install, unzip the files to a suitable location, maintaining the directory structure.
 
@@ -87,7 +87,7 @@ If you find a bug in this software, excluding that software which has been autho
    ojw@robots.ox.ac.uk
 
 Changes
--------
+--------
 
 v2.0: Added implementation of stereo algorithm described in [3].
 v2.1: Fixed a bug in vgg_interp2 which can cause crashes.
