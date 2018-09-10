@@ -9,12 +9,6 @@ typedef unsigned __int32 uint32_t;
 #include <stdint.h>
 #endif
 
-// Instantiations
-template class QPBO<int32_t>;
-template class QPBO<int64_t>;
-template class QPBO<float>;
-template class QPBO<double>;
-
 template <> 
 	inline void QPBO<int32_t>::get_type_information(char*& type_name, char*& type_format)
 {
@@ -42,5 +36,11 @@ template <>
 	type_name = "double";
 	type_format = "Lf";
 }
+
+// Instantiations
+template class QPBO<int32_t>;
+template class QPBO<int64_t>;
+template class QPBO<float>;
+template class QPBO<double>;
 
 

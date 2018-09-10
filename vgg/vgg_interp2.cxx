@@ -10,7 +10,7 @@
 #endif
 
 // Matlab should include this but doesn't - why waste time and destroy the cache writing values you don't need
-static inline mxArray *mxCreateUninitializedArray(int ndim, const int *dims, mxClassID classid, mxComplexity ComplexFlag)
+static inline mxArray *mxCreateUninitializedArray(int ndim, const mwSize *dims, mxClassID classid, mxComplexity ComplexFlag)
 {
     mxArray *outPtr = mxCreateNumericMatrix(0, 0, classid, ComplexFlag);
     int nBytes = mxGetElementSize(outPtr);
@@ -64,10 +64,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	int ndims = mxGetNumberOfDimensions(prhs[0]);
 	if (ndims > 20)
 		mexErrMsgTxt("A has an unsupported number of dimensions");
-	int out_dims[20];
+	mwSize out_dims[20];
 	out_dims[0] = mxGetM(prhs[1]);
 	out_dims[1] = mxGetN(prhs[1]);
-	const int *dims = mxGetDimensions(prhs[0]);
+	const mwSize *dims = mxGetDimensions(prhs[0]);
 	out_dims[2] = 1;
 	int nchannels = 1;
 	for (int i = 2; i < ndims; i++) {

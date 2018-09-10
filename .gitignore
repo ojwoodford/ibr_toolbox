@@ -31,3 +31,4 @@
 *.deps
 *.unsuccessfulbuild
 *.float32
+.DS_Store

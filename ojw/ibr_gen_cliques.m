@@ -22,5 +22,5 @@
 function varargout = ibr_gen_cliques(varargin)
 funcName = mfilename;
 sourceList = {[funcName '.cxx']}; % Cell array of source files
-vgg_mexcompile_script; % Compilation happens in this script
+[varargout{1:nargout}] = compile(varargin{:}); % Compilation happens here
 return

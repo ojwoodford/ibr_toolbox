@@ -81,5 +81,5 @@ sd = 'qpbo/';
 sourceList = {['-I' sd], [funcName '.cxx'], [sd 'QPBO.cpp'],...
               [sd 'QPBO_maxflow.cpp'], [sd 'QPBO_extra.cpp'],...
               [sd 'QPBO_postprocessing.cpp']};
-vgg_mexcompile_script; % Compilation happens in this script
+[varargout{1:nargout}] = compile(varargin{:}); % Compilation happens here
 return

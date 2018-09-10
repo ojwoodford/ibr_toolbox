@@ -33,5 +33,5 @@ sd = 'seg_ms/';
 sourceList = {['-I' sd], [funcName '.cxx'], [sd 'msImageProcessor.cpp'],...
               [sd 'ms.cpp'], [sd 'rlist.cpp'], [sd 'RAList.cpp'],...
               [sd 'msSys.cpp']};
-vgg_mexcompile_script; % Compilation happens in this script
+[varargout{1:nargout}] = compile(varargin{:}); % Compilation happens here
 return

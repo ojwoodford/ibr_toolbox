@@ -21,7 +21,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 		mexErrMsgTxt("Unexpected number of input arguments.");
 	if (nlhs < 1 || nlhs > 2)
 		mexErrMsgTxt("Unexpected number of output arguments.");
-	const int *dims = mxGetDimensions(prhs[0]);
+	const mwSize *dims = mxGetDimensions(prhs[0]);
 	if (!mxIsUint8(prhs[0]) || mxGetNumberOfDimensions(prhs[0]) != 3 || dims[2] != 3)
 		mexErrMsgTxt("A must be an HxWx3 uint8 array.");
 

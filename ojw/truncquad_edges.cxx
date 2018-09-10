@@ -104,7 +104,7 @@ template<class T> static inline void wrapper_func(int nlhs, mxArray *plhs[], int
 	int cached_node1 = -3487; // Random to avoid a bug with first cacheing
 	int pitch[2];
 	const double *mode[2];
-	int dims[2];
+	mwSize dims[2];
 
 	// Go through each clique...
 	for (int c = 0; c < num_edges; c++, EI += 2) {

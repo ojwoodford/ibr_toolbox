@@ -48,5 +48,5 @@ sd = 'trw-s/';
 sourceList = {['-I' sd], [funcName '.cxx'], [sd 'MRFEnergy.cpp'],...
               [sd 'minimize.cpp'], [sd 'ordering.cpp'],...
               [sd 'treeProbabilities.cpp']};
-vgg_mexcompile_script; % Compilation happens in this script
+[varargout{1:nargout}] = compile(varargin{:}); % Compilation happens here
 return

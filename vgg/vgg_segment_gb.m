@@ -29,5 +29,5 @@ function varargout = vgg_segment_gb(varargin)
 funcName = mfilename;
 sd = 'seg_gb/';
 sourceList = {['-I' sd], [funcName '.cxx']};
-vgg_mexcompile_script; % Compilation happens in this script
+[varargout{1:nargout}] = compile(varargin{:}); % Compilation happens here
 return

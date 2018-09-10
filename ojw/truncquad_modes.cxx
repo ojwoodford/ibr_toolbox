@@ -30,7 +30,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	int ndims = mxGetNumberOfDimensions(prhs[0]);
 	if (ndims != 3)
 		mexErrMsgTxt("I should have 3 dimensions");
-	const int *dims = mxGetDimensions(prhs[0]);
+	const mwSize *dims = mxGetDimensions(prhs[0]);
 	int d_step = dims[0] * dims[1];
 
 	// Get pointers to input arrays

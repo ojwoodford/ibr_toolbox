@@ -18,9 +18,9 @@ struct ssd { enum {method = 1}; };
 struct sad { enum {method = 2}; };
 struct rssd { enum {method = 3}; };
 
-template<class Q> static inline void wrapper_func(const Q *IA, const mxLogical *VA, const mxLogical *V, const int *dims, double Kocc, int method, mxClassID out_class, mxArray *plhs[]);
-template<class Q, class R> static inline void wrapper_func2(const Q *IA, const mxLogical *VA, const mxLogical *V, const int *dims, R Kocc, int method, mxClassID out_class, mxArray *plhs[]);
-template<class Method, class Q, class R> static inline void gen_cliques(const Q *IA, const mxLogical *VA, const mxLogical *V, const int *dims, R Kocc, Method *, mxClassID out_class, mxArray *plhs[]);
+template<class Q> static inline void wrapper_func(const Q *IA, const mxLogical *VA, const mxLogical *V, const mwSize *dims, double Kocc, int method, mxClassID out_class, mxArray *plhs[]);
+template<class Q, class R> static inline void wrapper_func2(const Q *IA, const mxLogical *VA, const mxLogical *V, const mwSize *dims, R Kocc, int method, mxClassID out_class, mxArray *plhs[]);
+template<class Method, class Q, class R> static inline void gen_cliques(const Q *IA, const mxLogical *VA, const mxLogical *V, const mwSize *dims, R Kocc, Method *, mxClassID out_class, mxArray *plhs[]);
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
@@ -43,7 +43,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	// Get and check array dimensions
 	if (mxGetNumberOfDimensions(prhs[0]) != 3)
 		mexErrMsgTxt("IA has an unexpected number of dimensions");
-	const int *dims = mxGetDimensions(prhs[0]);
+	const mwSize *dims = mxGetDimensions(prhs[0]);
 	if ((dims[0]*dims[2]) != mxGetNumberOfElements(prhs[1]) || (dims[0]*dims[2]) != mxGetNumberOfElements(prhs[2]))
 		mexErrMsgTxt("VA and/or V have an unexpected number of dimensions");
 
@@ -69,7 +69,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 	return;
 }
 
-template<class Q> static inline void wrapper_func(const Q *IA, const mxLogical *VA, const mxLogical *V, const int *dims, double Kocc, int method, mxClassID out_class, mxArray *plhs[])
+template<class Q> static inline void wrapper_func(const Q *IA, const mxLogical *VA, const mxLogical *V, const mwSize *dims, double Kocc, int method, mxClassID out_class, mxArray *plhs[])
 {
 	// Call the interp function according to the input and output type
 	switch (out_class) {
@@ -92,7 +92,7 @@ template<class Q> static inline void wrapper_func(const Q *IA, const mxLogical *
 	return;
 }
 
-template<class Q, class R> static inline void wrapper_func2(const Q *IA, const mxLogical *VA, const mxLogical *V, const int *dims, R Kocc, int method, mxClassID out_class, mxArray *plhs[])
+template<class Q, class R> static inline void wrapper_func2(const Q *IA, const mxLogical *VA, const mxLogical *V, const mwSize *dims, R Kocc, int method, mxClassID out_class, mxArray *plhs[])
 {
 	// Call the interp function according to the input and output type
 	switch (method) {
@@ -127,7 +127,7 @@ template<class U, class T> static inline U saturate_cast(T val)
 	return static_cast<U>(val);
 }
 
-template<class T> static inline void calc_mean(T *M, const T *IA, const int *dims, int a) 
+template<class T> static inline void calc_mean(T *M, const T *IA, const mwSize *dims, int a) 
 {
 	// Sum the values
 	for (int c = 0; c < dims[1]; c++){
@@ -138,7 +138,7 @@ template<class T> static inline void calc_mean(T *M, const T *IA, const int *dim
 	}
 }
 
-template<class T> static inline void calc_mean(T *M, const T *IA, const int *dims, int a, mxLogical *V) 
+template<class T> static inline void calc_mean(T *M, const T *IA, const mwSize *dims, int a, mxLogical *V) 
 {
 	int num = 0;
 
@@ -165,7 +165,7 @@ template<class T> static inline void calc_mean(T *M, const T *IA, const int *dim
 	}
 }
 
-template<class Q, class R>static inline R calc_cost(ssd *, const Q *M, const Q *IA, const int *dims, int a, int b, R Kocc) {
+template<class Q, class R>static inline R calc_cost(ssd *, const Q *M, const Q *IA, const mwSize *dims, int a, int b, R Kocc) {
 	Q tot = 0;
 	for (int c = 0; c < dims[1]; c++) {
 		Q val = M[c] - IA[a+c*dims[0]+b*dims[0]*dims[1]];
@@ -175,7 +175,7 @@ template<class Q, class R>static inline R calc_cost(ssd *, const Q *M, const Q *
 	out = out > Kocc ? Kocc : out;
 	return out;
 }
-template<class Q, class R>static inline R calc_cost(sad *, const Q *M, const Q *IA, const int *dims, int a, int b, R Kocc) {
+template<class Q, class R>static inline R calc_cost(sad *, const Q *M, const Q *IA, const mwSize *dims, int a, int b, R Kocc) {
 	Q tot = 0;
 	for (int c = 0; c < dims[1]; c++) {
 		Q val = M[c] - IA[a+c*dims[0]+b*dims[0]*dims[1]];
@@ -185,7 +185,7 @@ template<class Q, class R>static inline R calc_cost(sad *, const Q *M, const Q *
 	out = out > Kocc ? Kocc : out;
 	return out;
 }
-template<class Q, class R>static inline R calc_cost(rssd *, const Q *M, const Q *IA, const int *dims, int a, int b, R Kocc) {
+template<class Q, class R>static inline R calc_cost(rssd *, const Q *M, const Q *IA, const mwSize *dims, int a, int b, R Kocc) {
 	Q tot = 0;
 	for (int c = 0; c < dims[1]; c++) {
 		Q val = M[c] - IA[a+c*dims[0]+b*dims[0]*dims[1]];
@@ -196,7 +196,7 @@ template<class Q, class R>static inline R calc_cost(rssd *, const Q *M, const Q 
 	out = out > Kocc ? Kocc : out;
 	return out;
 }
-template<class Q, class R>static inline R calc_cost(ssd *, const Q *IA, const int *dims, int a, R Kocc) {
+template<class Q, class R>static inline R calc_cost(ssd *, const Q *IA, const mwSize *dims, int a, R Kocc) {
 	Q tot = 0;
 	for (int c = 0; c < dims[1]; c++) {
 		Q val = IA[a+c*dims[0]] - IA[a+c*dims[0]+dims[0]*dims[1]];
@@ -206,7 +206,7 @@ template<class Q, class R>static inline R calc_cost(ssd *, const Q *IA, const in
 	out = out > Kocc ? Kocc : out;
 	return out;
 }
-template<class Q, class R>static inline R calc_cost(sad *, const Q *IA, const int *dims, int a, R Kocc) {
+template<class Q, class R>static inline R calc_cost(sad *, const Q *IA, const mwSize *dims, int a, R Kocc) {
 	Q tot = 0;
 	for (int c = 0; c < dims[1]; c++) {
 		Q val = IA[a+c*dims[0]] - IA[a+c*dims[0]+dims[0]*dims[1]];
@@ -216,7 +216,7 @@ template<class Q, class R>static inline R calc_cost(sad *, const Q *IA, const in
 	out = out > Kocc ? Kocc : out;
 	return out;
 }
-template<class Q, class R>static inline R calc_cost(rssd *, const Q *IA, const int *dims, int a, R Kocc) {
+template<class Q, class R>static inline R calc_cost(rssd *, const Q *IA, const mwSize *dims, int a, R Kocc) {
 	Q tot = 0;
 	for (int c = 0; c < dims[1]; c++) {
 		Q val = IA[a+c*dims[0]] - IA[a+c*dims[0]+dims[0]*dims[1]];
@@ -229,7 +229,7 @@ template<class Q, class R>static inline R calc_cost(rssd *, const Q *IA, const i
 }
 
 // Generate cliques
-template<class Method, class Q, class R> static inline void gen_cliques(const Q *IA, const mxLogical *VA, const mxLogical *V, const int *dims, R Kocc, Method *, mxClassID out_class, mxArray *plhs[])
+template<class Method, class Q, class R> static inline void gen_cliques(const Q *IA, const mxLogical *VA, const mxLogical *V, const mwSize *dims, R Kocc, Method *, mxClassID out_class, mxArray *plhs[])
 {
 	// Count up numbers of cliques of each size
 	int npair = 0;
