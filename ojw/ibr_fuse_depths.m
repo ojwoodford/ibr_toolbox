@@ -52,6 +52,7 @@ function [N info energy V] = ibr_fuse_depths(D1, D2, vals)
 t_start = cputime;
 
 % Initialize values
+show_output = ~isequal(vals.show_output, 0);
 Kinf = int32(0);
 scale_factor = 1e5 / vals.ephoto(1e6);
 occl_cost = cast(scale_factor * vals.occl_val, class(Kinf));
@@ -205,14 +206,14 @@ for a = 1:numel(vals.improve)
     info.numbers(2:4,a) = stats;
 
     if stats(1) && vals.improve(a) >= 2 && vals.improve(a) <= 3
-        if nargout > 2 || vals.show_output
+        if nargout > 2 || show_output
             [M info.numbers(3,a) U_ E_ SE_ V] = choose_labels(M, U, E(:,1:size(EI, 2)), EI, SE, vals.SEI, TE, TEI, num_in, vals.visibility, vals.improve(a), vals.independent);
             energy(a) = sum(U_) + sum(E_) + sum(SE_);
         else
             [M info.numbers(3,a)] = choose_labels(M, U, E(:,1:size(EI, 2)), EI, SE, vals.SEI, TE, TEI, num_in, vals.visibility, vals.improve(a), vals.independent);
         end
         N = M > 0;
-    elseif nargout > 2 || vals.show_output
+    elseif nargout > 2 || show_output
         N = M > 0;
         [U_ E_ SE_ V] = calc_vis_energy(N, U, E(:,1:size(EI, 2)), EI, SE, vals.SEI, TE, TEI, num_in);
         energy(a) = sum(U_) + sum(E_) + sum(SE_);
@@ -222,7 +223,7 @@ for a = 1:numel(vals.improve)
 end
 clear TEI TE U E SE EI_
 
-if nargout > 3 || vals.show_output
+if nargout > 3 || show_output
     % Generate output visibilities
     T = (tp * N) + (1:tp)';
     for b = 1:num_in
@@ -232,7 +233,7 @@ if nargout > 3 || vals.show_output
     V(tp+1:end,:) = [];
 end
 
-if vals.show_output
+if show_output
     % Display the output figures
     U_ = double(U_) + accum(EI(1,:)', E_, [tp 1]);
     U_ = reshape(U_, sp(1), sp(2));
