@@ -79,7 +79,7 @@ skip_point:
 				C[h+w] = (uint32_t)label;
 			}
 		}
-		delete map;
+		delete[] map;
 	}
 
 	return;
